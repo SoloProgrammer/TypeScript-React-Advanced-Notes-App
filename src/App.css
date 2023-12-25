@@ -1,0 +1,6 @@
+a{
+    color: black !important;
+}
+.hstack{
+    flex-wrap: wrap !important;
+}
