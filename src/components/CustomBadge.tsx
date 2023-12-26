@@ -1,8 +1,9 @@
 const BadgeStyles = {
-  background: "#e7e7e7",
-  boxShadow: "0 0 0 .5px rgba(0,0,0,.3)",
+  // background: "#e7e7e7",
+  background:'#fffbcf',
+  boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px",
   minWidth: "35px",
-  padding: "0rem .6rem",
+  padding: "0 .6rem",
   fontSize: ".8rem",
   borderRadius: "1rem",
 };

@@ -53,12 +53,27 @@ const App = () => {
     );
   };
 
+  const deleteTag = (id: string) => {
+    setTags((prevTags) => prevTags.filter((tag) => tag.id !== id));
+  };
+
+  const updateTag = (updatedTags: Tag[]) => {
+    setTags(updatedTags);
+  };
+
   return (
     <Container className="my-4">
       <Routes>
         <Route
           path="/"
-          element={<NoteList availableTags={tags} notes={notesWithTags} />}
+          element={
+            <NoteList
+              deleteTag={deleteTag}
+              updateTag={updateTag}
+              availableTags={tags}
+              notes={notesWithTags}
+            />
+          }
         />
         <Route
           path="/new"

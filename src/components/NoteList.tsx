@@ -2,14 +2,23 @@ import { Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { SimplifiedNote, Tag } from "../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import NoteCard from "./NoteCard";
+import EditTagsModal from "./Modals/EditTagsModal";
 
 type NoteListProps = {
   notes: SimplifiedNote[];
   availableTags: Tag[];
+  deleteTag: (id: string) => void;
+  updateTag: (data: Tag[]) => void;
+
 };
-const NoteList = ({ notes, availableTags }: NoteListProps) => {
+const NoteList = ({
+  notes,
+  availableTags,
+  updateTag,
+  deleteTag,
+}: NoteListProps) => {
   // Filteration of notes using search params
   const [searchParsms, setSearchParams] = useSearchParams({
     title: "",
@@ -35,6 +44,11 @@ const NoteList = ({ notes, availableTags }: NoteListProps) => {
     });
   }, [title, selectedTagsIds]);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       <Row className="mb-3">
@@ -46,13 +60,18 @@ const NoteList = ({ notes, availableTags }: NoteListProps) => {
             <Link to={"/new"}>
               <Button>Create</Button>
             </Link>
-            <Button variant="outline-secondary">Edit Tags</Button>
+            <Button
+              onClick={() => setShowModal(true)}
+              variant="outline-secondary"
+            >
+              Edit Tags
+            </Button>
           </Stack>
         </Col>
       </Row>
       <h4>Filter Notes by:</h4>
       <Form className="mb-4">
-        <Row  xs={1} sm={2}>
+        <Row xs={1} sm={2}>
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
@@ -116,6 +135,13 @@ const NoteList = ({ notes, availableTags }: NoteListProps) => {
           );
         })}
       </Row>
+      <EditTagsModal
+        availableTags={availableTags}
+        show={showModal}
+        handleCloseModal={handleCloseModal}
+        deleteTag={deleteTag}
+        updateTag={updateTag}
+      />
     </>
   );
 };
