@@ -37,7 +37,7 @@ const NoteForm = ({
   return (
     <Form onSubmit={handleSubmit}>
       <Stack gap={2}>
-        <Row>
+        <Row xs={1} sm={2}>
           <Col>
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>

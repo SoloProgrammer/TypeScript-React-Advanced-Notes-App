@@ -50,8 +50,8 @@ const EditTagsModal = ({
 
   const handleConfirm = () => {
     id && deleteTag(id);
-    handleCloseConfirmModal()
-    handleCloseModal()
+    handleCloseConfirmModal();
+    handleCloseModal();
   };
 
   return (
@@ -83,6 +83,7 @@ const EditTagsModal = ({
                     </Col>
                     <Col xs="auto">
                       <Button
+                        size="sm"
                         onClick={() => {
                           setShowDeleteModal(true);
                           setId(tag.id);
@@ -90,7 +91,12 @@ const EditTagsModal = ({
                         variant="outline-danger"
                         type="button"
                       >
-                        X
+                        <span
+                          style={{ fontSize: "1.2rem" }}
+                          className="material-symbols-outlined"
+                        >
+                          delete
+                        </span>
                       </Button>
                     </Col>
                   </Row>

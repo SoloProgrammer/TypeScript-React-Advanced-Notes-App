@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 
 type ConfirmModalProps = {
+  children?: React.ReactNode;
   title: string;
   desc: string;
   show: boolean;
@@ -17,6 +18,7 @@ type ConfirmModalProps = {
 };
 
 const ConfirmModal = ({
+  children,
   title,
   desc,
   btnText,
@@ -24,10 +26,10 @@ const ConfirmModal = ({
   handleCloseModal,
   handleConfirm,
 }: ConfirmModalProps) => {
-    
   return (
     <>
-      <Modal  show={show} onHide={handleCloseModal}>
+      {children && children}
+      <Modal show={show} onHide={handleCloseModal}>
         <ModalHeader closeButton>
           <ModalTitle>{title}</ModalTitle>
         </ModalHeader>

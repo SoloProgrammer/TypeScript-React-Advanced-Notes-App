@@ -3,6 +3,8 @@ import { useNote } from "./NoteLayout";
 import CustomBadge from "./CustomBadge";
 import { Link } from "react-router-dom";
 import ReactMarkDown from "react-markdown";
+import ConfirmModal from "./Modals/ConfirmModal";
+import { useState } from "react";
 
 type NoteDetailProps = {
   handleDelete: (id: string) => void;
@@ -11,6 +13,14 @@ type NoteDetailProps = {
 const NoteDetail = ({ handleDelete }: NoteDetailProps) => {
   const note = useNote();
 
+  const [show, setShow] = useState<boolean>(false);
+  
+  const handleCloseModal = () => {
+    setShow(false);
+  };
+
+  const handleConfirm = ()=> handleDelete(note.id)
+  
   return (
     <>
       <Row className="mb-4">
@@ -24,12 +34,21 @@ const NoteDetail = ({ handleDelete }: NoteDetailProps) => {
             <Link to={`/${note.id}/edit`}>
               <Button variant="primary">Edit</Button>
             </Link>
-            <Button
-              onClick={() => handleDelete(note.id)}
-              variant="outline-danger"
+            <ConfirmModal
+              btnText="delete"
+              title="Delete Note!"
+              desc="Are you sure you want to delete the note?"
+              show={show}
+              handleConfirm={handleConfirm}
+              handleCloseModal={handleCloseModal}
             >
-              Delete
-            </Button>
+              <Button
+                onClick={() => setShow(true)}
+                variant="outline-danger"
+              >
+                Delete
+              </Button>
+            </ConfirmModal>
           </Stack>
         </Col>
       </Row>
