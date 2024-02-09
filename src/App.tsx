@@ -1,15 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import NewNote from "./components/NewNote";
 import { Container } from "react-bootstrap";
 import useLocalStorage from "./Hooks/useLocalStorage";
-import { useMemo } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import { NoteData, RawNote, Tag } from "./types/Notestypes";
-import NoteList from "./components/NoteList";
-import NoteDetail from "./components/NoteDetail";
 import "./App.css";
 import NoteLayout from "./components/NoteLayout";
-import NoteEdit from "./components/NoteEdit";
+const NoteDetail = lazy(() => import("./components/NoteDetail"));
+const NoteEdit = lazy(() => import("./components/NoteEdit"));
+const NoteList = lazy(() => import("./components/NoteList"));
+const NewNote = lazy(() => import("./components/NewNote"));
 
 const App = () => {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
@@ -67,35 +67,48 @@ const App = () => {
         <Route
           path="/"
           element={
-            <NoteList
-              deleteTag={deleteTag}
-              updateTag={updateTag}
-              availableTags={tags}
-              notes={notesWithTags}
-            />
+            <Suspense fallback="Loading..">
+              <NoteList
+                deleteTag={deleteTag}
+                updateTag={updateTag}
+                availableTags={tags}
+                notes={notesWithTags}
+              />
+            </Suspense>
           }
         />
         <Route
           path="/new"
           element={
-            <NewNote
-              onCreateNote={onCreateNote}
-              onAddTag={onAddTag}
-              availableTags={tags}
-            />
+            <Suspense fallback="Loading...">
+              <NewNote
+                onCreateNote={onCreateNote}
+                onAddTag={onAddTag}
+                availableTags={tags}
+              />
+            </Suspense>
           }
         />
         <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route index element={<NoteDetail handleDelete={onDeleteNote} />} />
+          <Route
+            index
+            element={
+              <Suspense fallback="loading..">
+                <NoteDetail handleDelete={onDeleteNote} />
+              </Suspense>
+            }
+          />
           <Route
             index
             path="edit"
             element={
-              <NoteEdit
-                onUpdateNote={onUpdateNote}
-                onAddTag={onAddTag}
-                availableTags={tags}
-              />
+              <Suspense fallback="Loading..">
+                <NoteEdit
+                  onUpdateNote={onUpdateNote}
+                  onAddTag={onAddTag}
+                  availableTags={tags}
+                />
+              </Suspense>
             }
           />
         </Route>
