@@ -16,22 +16,12 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.4);
-    padding: 3px 8px;
-    border-radius: 50%;
     transition: .2s all;
     opacity: 0;
 }
 
 .noteCard:hover .pin {
     opacity: 1;
-}
-
-.noteCard .pin:hover {
-    background: rgba(0, 0, 0, 0.08);
-    color: var(--dim-text-color);
 }
 
 .pin.pinned {
@@ -54,14 +44,7 @@
 }
 
 .noteCard span {
-    transition: .2s all;
-    border-radius: 50%;
-    padding: 3px 8px;
-}
-
-.noteCard span:hover {
-    background: rgba(0, 0, 0, 0.08);
-    color: var(--dim-text-color);
+    font-size: 1.2rem;
 }
 
 @media screen and (max-width:770px) {

@@ -18,7 +18,7 @@ const NoteCard = ({ note, onPinNote }: NoteCardProps) => {
       <Card className={`p-4 pb-2 text-center ${styles.noteCard}`}>
         <span
           onClick={handlePinNote}
-          className={`${styles.pin} ${note.isPinned ? styles.pinned : ""}`}
+          className={`IconBtn ${styles.pin} ${note.isPinned ? styles.pinned : ""}`}
         >
           {!note.isPinned ? <BsPin /> : <BsFillPinFill />}
         </span>
@@ -29,10 +29,10 @@ const NoteCard = ({ note, onPinNote }: NoteCardProps) => {
           ))}
         </Stack>
         <div className={styles.actions}>
-          <span>
+          <span className="IconBtn">
             <LuTrash />
           </span>
-          <span>
+          <span className="IconBtn">
             <MdOutlineArchive />
           </span>
         </div>
