@@ -34,7 +34,7 @@ a {
     font-size: 1.3rem;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.4);
-    padding: 3px 8px;
+    padding: 3px 8px 5px 8px;
     border-radius: 50%;
     transition: .2s all;
     cursor: pointer;
