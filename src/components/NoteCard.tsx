@@ -1,22 +1,43 @@
 import { Card, CardBody, Stack } from "react-bootstrap";
-import { SimplifiedNote } from "../types/Notestypes";
-import Styles from "./css/noteCard.module.css";
+import { NoteCardProps } from "../types/Notestypes";
+import styles from "./css/noteCard.module.css";
 import CustomBadge from "./CustomBadge";
+import { BsFillPinFill, BsPin } from "react-icons/bs";
+import { motion } from "framer-motion";
+import { LuTrash } from "react-icons/lu";
+import { MdOutlineArchive } from "react-icons/md";
 
-type NoteCardProps = {
-  note: SimplifiedNote;
-};
-
-const NoteCard = ({ note }: NoteCardProps) => {
+const NoteCard = ({ note, onPinNote }: NoteCardProps) => {
+  const handlePinNote = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onPinNote(note.id);
+  };
   return (
-    <Card className={`p-4 pb-2 text-center ${Styles.noteCard}`}>
-      <CardBody>{note.title}</CardBody>
-      <Stack direction="horizontal" gap={2}>
-        {note.tags.map((tag) => (
-          <CustomBadge key={tag.id} label={tag.label} />
-        ))}
-      </Stack>
-    </Card>
+    <motion.div layoutId={note.id}>
+      <Card className={`p-4 pb-2 text-center ${styles.noteCard}`}>
+        <span
+          onClick={handlePinNote}
+          className={`${styles.pin} ${note.isPinned ? styles.pinned : ""}`}
+        >
+          {!note.isPinned ? <BsPin /> : <BsFillPinFill />}
+        </span>
+        <CardBody>{note.title}</CardBody>
+        <Stack direction="horizontal" gap={2}>
+          {note.tags.map((tag) => (
+            <CustomBadge key={tag.id} label={tag.label} />
+          ))}
+        </Stack>
+        <div className={styles.actions}>
+          <span>
+            <LuTrash />
+          </span>
+          <span>
+            <MdOutlineArchive />
+          </span>
+        </div>
+      </Card>
+    </motion.div>
   );
 };
 

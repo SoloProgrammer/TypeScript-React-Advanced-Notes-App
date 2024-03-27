@@ -9,17 +9,9 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
-import { Tag } from "../../types/Notestypes";
+import { EditTagsModalProps, Tag } from "../../types/Notestypes";
 import { FormEvent, useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
-
-type EditTagsModalProps = {
-  show: boolean;
-  handleCloseModal: () => void;
-  availableTags: Tag[];
-  deleteTag: (id: string) => void;
-  updateTag: (data: Tag[]) => void;
-};
 
 const EditTagsModal = ({
   show,

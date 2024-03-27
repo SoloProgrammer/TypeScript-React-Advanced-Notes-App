@@ -1,8 +1,75 @@
-.noteCard{
+.noteCard {
     transition: all .3s ease;
-
+    font-size: 1.125rem;
+    padding-bottom: 45px !important;
+    position: relative;
+    min-width: 300px;
+    cursor: pointer;
 }
-.noteCard:hover{
+
+.noteCard:hover {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     scale: 1.05
+}
+
+.noteCard .pin {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.4);
+    padding: 3px 8px;
+    border-radius: 50%;
+    transition: .2s all;
+    opacity: 0;
+}
+
+.noteCard:hover .pin {
+    opacity: 1;
+}
+
+.noteCard .pin:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--dim-text-color);
+}
+
+.pin.pinned {
+    opacity: 1;
+    color: var(--dim-text-color);
+}
+
+.actions {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: var(--light-text-color);
+}
+
+.noteCard:hover .actions {
+    opacity: 1;
+}
+
+.noteCard span {
+    transition: .2s all;
+    border-radius: 50%;
+    padding: 3px 8px;
+}
+
+.noteCard span:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--dim-text-color);
+}
+
+@media screen and (max-width:770px) {
+    .pin {
+        opacity: 1 !important;
+    }
+
+    .noteCard {
+        min-width: auto;
+    }
 }

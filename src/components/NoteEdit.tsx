@@ -1,14 +1,8 @@
 import NoteForm from "./NoteForm";
-import { NoteData, Tag } from "../types/Notestypes";
+import { EditNoteProps } from "../types/Notestypes";
 import { useNote } from "./NoteLayout";
 import { Link, Navigate } from "react-router-dom";
 import { Button, Col, Row } from "react-bootstrap";
-
-type EditNoteProps = {
-  onUpdateNote: (id: string, data: NoteData) => void;
-  onAddTag: (data: Tag) => void;
-  availableTags: Tag[];
-};
 
 const NoteEdit = ({ onUpdateNote, onAddTag, availableTags }: EditNoteProps) => {
   const note = useNote();

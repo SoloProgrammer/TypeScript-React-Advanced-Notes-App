@@ -1,0 +1,79 @@
+.container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .2);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.box {
+    margin-top: 70px;
+    background: #fff;
+    border-radius: 10px;
+    max-width: 600px;
+    position: relative;
+    padding-bottom: 30px;
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302), 0 4px 8px 3px rgba(60, 64, 67, 0.149);
+}
+
+.top {
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.tags {
+    padding:20px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+.pinIcon{
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+.pinned{
+    color: var(--dim-text-color) !important;
+}
+
+.markdown {
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.actions span {
+    cursor: pointer;
+}
+
+.fsBtn {
+    font-size: 1.5rem;
+    transition: scale .2s;
+    display: inline-block;
+    transition: scale .2s;
+}
+
+.fsBtn:hover {
+    scale: 1.2
+}
+
+@media screen and (max-width:770px) {
+    .box {
+        max-width: 98%;
+    }
+}

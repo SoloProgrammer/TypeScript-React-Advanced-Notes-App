@@ -10,14 +10,17 @@ type NoteListProps = {
   notes: SimplifiedNote[];
   availableTags: Tag[];
   deleteTag: (id: string) => void;
+  handleNoteClick: (id: string) => void;
+  onPinNote: (id: string) => void;
   updateTag: (data: Tag[]) => void;
-
 };
 const NoteList = ({
   notes,
   availableTags,
   updateTag,
+  onPinNote,
   deleteTag,
+  handleNoteClick,
 }: NoteListProps) => {
   // Filteration of notes using search params
   const [searchParsms, setSearchParams] = useSearchParams({
@@ -48,6 +51,9 @@ const NoteList = ({
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const pinnedNotes = filteredNotes.filter((note) => note.isPinned);
+  const otherNotes = filteredNotes.filter((note) => !note.isPinned);
 
   return (
     <>
@@ -120,21 +126,34 @@ const NoteList = ({
           </Col>
         </Row>
       </Form>
-      <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
-        {filteredNotes.map((note) => {
-          return (
-            <Link
-              style={{ textDecoration: "none" }}
-              key={note.id}
-              to={`/${note.id}`}
-            >
-              <Col>
-                <NoteCard note={note} />
-              </Col>
-            </Link>
-          );
-        })}
-      </Row>
+      {pinnedNotes.length > 0 && (
+        <div>
+          <h3 className="notesHeading">PINNED</h3>
+          <Row xs={1} sm={2} lg={3} xl={3} className="g-3">
+            {pinnedNotes.map((note) => {
+              return (
+                <Col key={note.id} onClick={() => handleNoteClick(note.id)}>
+                  <NoteCard note={note} onPinNote={onPinNote} />
+                </Col>
+              );
+            })}
+          </Row>
+        </div>
+      )}
+      {otherNotes.length > 0 && (
+        <div>
+          {pinnedNotes.length > 0 && <h3 className="notesHeading">OTHERS</h3>}
+          <Row xs={1} sm={2} lg={3} xl={3} className="g-3">
+            {otherNotes.map((note) => {
+              return (
+                <Col key={note.id} onClick={() => handleNoteClick(note.id)}>
+                  <NoteCard note={note} onPinNote={onPinNote} />
+                </Col>
+              );
+            })}
+          </Row>
+        </div>
+      )}
       <EditTagsModal
         availableTags={availableTags}
         show={showModal}
