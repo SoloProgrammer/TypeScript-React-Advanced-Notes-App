@@ -2,10 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import useLocalStorage from "./Hooks/useLocalStorage";
-import { Suspense, lazy, useMemo } from "react";
-import { NoteData, RawNote, Tag } from "./types/Notestypes";
+import { Suspense, lazy, useMemo, useState } from "react";
+import { Note, NoteData, RawNote, Tag } from "./types/Notestypes";
 import "./App.css";
 import NoteLayout from "./components/NoteLayout";
+import ViewNoteModal from "./components/Modals/ViewNoteModal/ViewNoteModal";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
 const NoteList = lazy(() => import("./components/NoteList"));
@@ -61,8 +62,26 @@ const App = () => {
     setTags(updatedTags);
   };
 
+  const onPinNote = (id: string) => {
+    setNotes(
+      notes.map((note) => {
+        if (note.id === id) {
+          note.isPinned = !note.isPinned;
+        }
+        return note;
+      })
+    );
+  };
+
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const handleNoteClick = (id: string) => {
+    setSelectedNote(notesWithTags.filter((n) => n.id === id)[0]);
+  };
+
+  const handleModalOffsetClick = () => setSelectedNote(null);
+
   return (
-    <Container className="my-4">
+    <Container className="my-4 container">
       <Routes>
         <Route
           path="/"
@@ -71,7 +90,9 @@ const App = () => {
               <NoteList
                 deleteTag={deleteTag}
                 updateTag={updateTag}
+                onPinNote={onPinNote}
                 availableTags={tags}
+                handleNoteClick={handleNoteClick}
                 notes={notesWithTags}
               />
             </Suspense>
@@ -114,6 +135,11 @@ const App = () => {
         </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Routes>
+      <ViewNoteModal
+        onPinNote={onPinNote}
+        handleOffsetClick={handleModalOffsetClick}
+        selectedNote={selectedNote}
+      />
     </Container>
   );
 };

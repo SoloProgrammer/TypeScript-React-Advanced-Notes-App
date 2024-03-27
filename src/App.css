@@ -1,6 +1,46 @@
-a{
+body {
+    font-family: "Roboto", sans-serif !important;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    --light-text-color: rgba(0, 0, 0, 0.4);
+    --dim-text-color: rgba(0, 0, 0, 0.7);
+}
+
+a {
     color: black !important;
 }
-.hstack{
+
+.hstack {
     flex-wrap: wrap !important;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.notesHeading {
+    color: #5f6368;
+    letter-spacing: .07272727em;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: .6875rem;
+    font-weight: 500;
+    line-height: 1rem;
+    text-transform: uppercase;
+    margin: 32px 5px 8px;
+}
+
+.IconBtn {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.4);
+    padding: 3px 8px;
+    border-radius: 50%;
+    transition: .2s all;
+    cursor: pointer;
+}
+
+.IconBtn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--dim-text-color);
 }
