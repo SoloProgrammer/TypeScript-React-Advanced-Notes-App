@@ -7,9 +7,11 @@ import { Note, NoteData, RawNote, Tag } from "./types/Notestypes";
 import "./App.css";
 import NoteLayout from "./components/NoteLayout";
 import ViewNoteModal from "./components/Modals/ViewNoteModal/ViewNoteModal";
+import Navbar from "./components/Shared/Navbar/Navbar";
+import SideBar from "./components/Shared/SideBar/SideBar";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
-const NoteList = lazy(() => import("./components/NoteList"));
+const NoteList = lazy(() => import("./components/NoteList/NoteList"));
 const NewNote = lazy(() => import("./components/NewNote"));
 
 const App = () => {
@@ -80,67 +82,77 @@ const App = () => {
 
   const handleModalOffsetClick = () => setSelectedNote(null);
 
+  const [open, setOpen] = useState(false);
+
+  const toggleSidebar = () => setOpen((prev) => !prev);
+
   return (
-    <Container className="my-4 container">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense fallback="Loading..">
-              <NoteList
-                deleteTag={deleteTag}
-                updateTag={updateTag}
-                onPinNote={onPinNote}
-                availableTags={tags}
-                handleNoteClick={handleNoteClick}
-                notes={notesWithTags}
+    <>
+      <Navbar toggleSidebar={toggleSidebar} />
+      <Container className="my-4 container">
+        <SideBar open={open} tags={tags} />
+        <main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback="Loading..">
+                  <NoteList
+                    deleteTag={deleteTag}
+                    updateTag={updateTag}
+                    onPinNote={onPinNote}
+                    availableTags={tags}
+                    handleNoteClick={handleNoteClick}
+                    notes={notesWithTags}
+                  />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/new"
+              element={
+                <Suspense fallback="Loading...">
+                  <NewNote
+                    onCreateNote={onCreateNote}
+                    onAddTag={onAddTag}
+                    availableTags={tags}
+                  />
+                </Suspense>
+              }
+            />
+            <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+              <Route
+                index
+                element={
+                  <Suspense fallback="loading..">
+                    <NoteDetail handleDelete={onDeleteNote} />
+                  </Suspense>
+                }
               />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/new"
-          element={
-            <Suspense fallback="Loading...">
-              <NewNote
-                onCreateNote={onCreateNote}
-                onAddTag={onAddTag}
-                availableTags={tags}
+              <Route
+                index
+                path="edit"
+                element={
+                  <Suspense fallback="Loading..">
+                    <NoteEdit
+                      onUpdateNote={onUpdateNote}
+                      onAddTag={onAddTag}
+                      availableTags={tags}
+                    />
+                  </Suspense>
+                }
               />
-            </Suspense>
-          }
+            </Route>
+            <Route path="*" element={<Navigate to={"/"} />} />
+          </Routes>
+        </main>
+        <ViewNoteModal
+          onPinNote={onPinNote}
+          handleOffsetClick={handleModalOffsetClick}
+          selectedNote={selectedNote}
         />
-        <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route
-            index
-            element={
-              <Suspense fallback="loading..">
-                <NoteDetail handleDelete={onDeleteNote} />
-              </Suspense>
-            }
-          />
-          <Route
-            index
-            path="edit"
-            element={
-              <Suspense fallback="Loading..">
-                <NoteEdit
-                  onUpdateNote={onUpdateNote}
-                  onAddTag={onAddTag}
-                  availableTags={tags}
-                />
-              </Suspense>
-            }
-          />
-        </Route>
-        <Route path="*" element={<Navigate to={"/"} />} />
-      </Routes>
-      <ViewNoteModal
-        onPinNote={onPinNote}
-        handleOffsetClick={handleModalOffsetClick}
-        selectedNote={selectedNote}
-      />
-    </Container>
+      </Container>
+    </>
   );
 };
 

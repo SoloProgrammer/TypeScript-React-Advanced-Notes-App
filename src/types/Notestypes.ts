@@ -35,6 +35,7 @@ export type ViewNoteModalProps = {
 export type NoteCardProps = {
   note: SimplifiedNote;
   onPinNote: (id: string) => void;
+  handleClick: (id: string) => void;
 };
 
 export type EditTagsModalProps = {

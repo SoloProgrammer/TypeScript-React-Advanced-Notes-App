@@ -1,0 +1,36 @@
+.container {
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+    padding: 13px 40px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    color: var(--dim-text-color);
+    font-weight: 600;
+}
+
+.menuIcon {
+    font-size: 1.6rem !important;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+@media screen and (max-width:770px) {
+    .container {
+        padding-inline: 10px;
+    }
+
+    .menuIcon {
+        margin-right: 5px;
+    }
+
+    .logo>span {
+        display: none;
+    }
+}

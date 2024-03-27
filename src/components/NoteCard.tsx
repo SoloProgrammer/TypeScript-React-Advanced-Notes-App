@@ -7,18 +7,20 @@ import { motion } from "framer-motion";
 import { LuTrash } from "react-icons/lu";
 import { MdOutlineArchive } from "react-icons/md";
 
-const NoteCard = ({ note, onPinNote }: NoteCardProps) => {
+const NoteCard = ({ note, onPinNote, handleClick }: NoteCardProps) => {
   const handlePinNote = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
     onPinNote(note.id);
   };
   return (
-    <motion.div layoutId={note.id}>
+    <motion.div className={styles.container} onClick={() => handleClick(note.id)} layoutId={note.id}>
       <Card className={`p-4 pb-2 text-center ${styles.noteCard}`}>
         <span
           onClick={handlePinNote}
-          className={`IconBtn ${styles.pin} ${note.isPinned ? styles.pinned : ""}`}
+          className={`IconBtn ${styles.pin} ${
+            note.isPinned ? styles.pinned : ""
+          }`}
         >
           {!note.isPinned ? <BsPin /> : <BsFillPinFill />}
         </span>

@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    z-index: 90;
 }
 
 .box {
@@ -18,6 +19,7 @@
     position: relative;
     padding-bottom: 40px;
     box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302), 0 4px 8px 3px rgba(60, 64, 67, 0.149);
+    min-width: 500px;
 }
 
 .top {
@@ -78,5 +80,14 @@
     }
     .markdown{
         max-height: 500px;
+    }
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .box{
+        margin-top: 0px;
+        min-width: 97%;
     }
 }

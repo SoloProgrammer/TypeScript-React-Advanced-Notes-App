@@ -1,10 +1,11 @@
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { NoteListProps } from "../types/Notestypes";
+import { NoteListProps } from "../../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
 import { useMemo, useState } from "react";
-import NoteCard from "./NoteCard";
-import EditTagsModal from "./Modals/EditTagsModal";
+import NoteCard from "../NoteCard";
+import EditTagsModal from "../Modals/EditTagsModal";
+import styles from "./NoteList.module.css";
 
 const NoteList = ({
   notes,
@@ -118,32 +119,39 @@ const NoteList = ({
           </Col>
         </Row>
       </Form>
+      <div>{notes.length > 0 && filteredNotes.length < 1 && <NotFound />}</div>
       {pinnedNotes.length > 0 && (
         <div>
           <h3 className="notesHeading">PINNED</h3>
-          <Row xs={1} sm={2} lg={3} xl={3} className="g-3">
+          <div className={`${styles.list}`}>
             {pinnedNotes.map((note) => {
               return (
-                <Col key={note.id} onClick={() => handleNoteClick(note.id)}>
-                  <NoteCard note={note} onPinNote={onPinNote} />
-                </Col>
+                <NoteCard
+                  key={note.id}
+                  handleClick={handleNoteClick}
+                  note={note}
+                  onPinNote={onPinNote}
+                />
               );
             })}
-          </Row>
+          </div>
         </div>
       )}
       {otherNotes.length > 0 && (
         <div>
           {pinnedNotes.length > 0 && <h3 className="notesHeading">OTHERS</h3>}
-          <Row xs={1} sm={2} lg={3} xl={3} className="g-3">
+          <div className={`${styles.list}`}>
             {otherNotes.map((note) => {
               return (
-                <Col key={note.id} onClick={() => handleNoteClick(note.id)}>
-                  <NoteCard note={note} onPinNote={onPinNote} />
-                </Col>
+                <NoteCard
+                  key={note.id}
+                  handleClick={handleNoteClick}
+                  note={note}
+                  onPinNote={onPinNote}
+                />
               );
             })}
-          </Row>
+          </div>
         </div>
       )}
       <EditTagsModal
@@ -156,5 +164,18 @@ const NoteList = ({
     </>
   );
 };
+
+function NotFound() {
+  return (
+    <div className="not-found">
+      <img
+        src="https://static.vecteezy.com/system/resources/thumbnails/020/487/380/small/empty-folder-no-result-document-file-data-not-found-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
+        alt="not found"
+        width={200}
+      />
+      No matching results
+    </div>
+  );
+}
 
 export default NoteList;

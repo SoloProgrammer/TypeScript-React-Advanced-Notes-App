@@ -3,8 +3,12 @@
     font-size: 1.125rem;
     padding-bottom: 45px !important;
     position: relative;
-    min-width: 300px;
     cursor: pointer;
+    width: 100%;
+}
+
+.container {
+    min-width: 300px;
 }
 
 .noteCard:hover {
@@ -52,7 +56,11 @@
         opacity: 1 !important;
     }
 
+    .container {
+        width: 100%;
+    }
+
     .noteCard {
-        min-width: auto;
+        width: 100%;
     }
 }
