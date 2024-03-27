@@ -1,19 +1,11 @@
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { SimplifiedNote, Tag } from "../types/Notestypes";
+import { NoteListProps } from "../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
 import { useMemo, useState } from "react";
 import NoteCard from "./NoteCard";
 import EditTagsModal from "./Modals/EditTagsModal";
 
-type NoteListProps = {
-  notes: SimplifiedNote[];
-  availableTags: Tag[];
-  deleteTag: (id: string) => void;
-  handleNoteClick: (id: string) => void;
-  onPinNote: (id: string) => void;
-  updateTag: (data: Tag[]) => void;
-};
 const NoteList = ({
   notes,
   availableTags,

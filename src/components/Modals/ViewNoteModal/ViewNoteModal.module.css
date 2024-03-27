@@ -16,7 +16,7 @@
     border-radius: 10px;
     max-width: 600px;
     position: relative;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302), 0 4px 8px 3px rgba(60, 64, 67, 0.149);
 }
 
@@ -47,7 +47,7 @@
 
 .markdown {
     padding: 20px;
-    max-height: 500px;
+    max-height: 450px;
     overflow-y: auto;
 }
 
@@ -75,5 +75,8 @@
 @media screen and (max-width:770px) {
     .box {
         max-width: 98%;
+    }
+    .markdown{
+        max-height: 500px;
     }
 }
