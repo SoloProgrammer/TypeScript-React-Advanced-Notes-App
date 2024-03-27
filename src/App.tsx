@@ -9,6 +9,7 @@ import NoteLayout from "./components/NoteLayout";
 import ViewNoteModal from "./components/Modals/ViewNoteModal/ViewNoteModal";
 import Navbar from "./components/Shared/Navbar/Navbar";
 import SideBar from "./components/Shared/SideBar/SideBar";
+import TagPage from "./pages/TagPage/TagPage";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
 const NoteList = lazy(() => import("./components/NoteList/NoteList"));
@@ -82,16 +83,17 @@ const App = () => {
 
   const handleModalOffsetClick = () => setSelectedNote(null);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleSidebar = () => setOpen((prev) => !prev);
+  const closeSidebar = () => setOpen(true);
 
   return (
     <>
       <Navbar toggleSidebar={toggleSidebar} />
       <Container className="my-4 container">
-        <SideBar open={open} tags={tags} />
-        <main>
+        <SideBar open={open} tags={tags} toggleSidebar={closeSidebar} />
+        <main className={`main ${!open ? "close" : ""}`}>
           <Routes>
             <Route
               path="/"
@@ -143,6 +145,7 @@ const App = () => {
                 }
               />
             </Route>
+            <Route path="/tag/:tag" element={<TagPage />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </main>

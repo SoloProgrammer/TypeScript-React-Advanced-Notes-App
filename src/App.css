@@ -9,6 +9,7 @@ body {
 }
 
 a {
+    text-decoration: none;
     color: black !important;
 }
 
@@ -30,7 +31,13 @@ aside {
 }
 
 main {
+    transition: .3s all cubic-bezier(0.76, 0, 0.24, 1);
     padding-left: 350px;
+    padding-bottom: 50px;
+}
+
+.main.close {
+    padding-left: 100px !important;
 }
 
 .notesHeading {
@@ -81,9 +88,11 @@ main {
 }
 
 @media screen and (max-width:650px) {
-    main {
-        padding-left: 0px;
+
+    main, .main.close {
+        padding-left: 0px !important;
     }
+
     .container {
         padding-inline: 10px !important;
     }

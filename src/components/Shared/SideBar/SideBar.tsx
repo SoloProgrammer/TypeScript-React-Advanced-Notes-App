@@ -3,42 +3,69 @@ import { MdLabelOutline, MdOutlineArchive } from "react-icons/md";
 import { AiOutlineBulb } from "react-icons/ai";
 import { Tag } from "../../../types/Notestypes";
 import { BsTrash } from "react-icons/bs";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 type SideBarProps = {
   tags: Tag[];
-  open: true | false
+  toggleSidebar: () => void;
+  open: true | false;
 };
-const SideBar = ({ tags, open = false }: SideBarProps) => {
+const SideBar = ({ tags, open = false, toggleSidebar }: SideBarProps) => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    toggleSidebar();
+  }, [pathname]);
+
   return (
-    <aside className={`${styles.container} ${open ? styles.open : ''}`}>
-      <ul className={styles.list}>
-        <li className={`${styles.item} ${styles.selected}`}>
-          <span>
-            <AiOutlineBulb />
-          </span>
-          Notes
-        </li>
-        {tags.map((tag) => (
-          <li key={tag.id} className={`${styles.item}`}>
+    <>
+      <div
+        onClick={toggleSidebar}
+        className={`${!open ? styles.wall : ""}`}
+      ></div>
+      <aside className={`${styles.container}  ${!open ? styles.close : ""}`}>
+        <ul className={styles.list}>
+          <Link to={"/"}>
+            <li
+              className={`${styles.item} ${!open ? styles.close : ""} ${
+                pathname === "/" ? styles.selected : ""
+              }`}
+            >
+              <span>
+                <AiOutlineBulb />
+              </span>
+              Notes
+            </li>
+          </Link>
+          {tags.map((tag) => (
+            <Link key={tag.id} to={`/tag/${tag.label}`}>
+              <li
+                className={`${styles.item} ${!open ? styles.close : ""} ${
+                  pathname === `/tag/${tag.label}` ? styles.selected : ""
+                }`}
+              >
+                <span>
+                  <MdLabelOutline />
+                </span>
+                {tag.label}
+              </li>
+            </Link>
+          ))}
+          <li className={`${styles.item} ${!open ? styles.close : ""}`}>
             <span>
-              <MdLabelOutline />
+              <MdOutlineArchive />
             </span>
-            {tag.label}
+            Archive
           </li>
-        ))}
-        <li className={styles.item}>
-          <span>
-            <MdOutlineArchive />
-          </span>
-          Archive
-        </li>
-        <li className={styles.item}>
-          <span>
-            <BsTrash />
-          </span>
-          Bin
-        </li>
-      </ul>
-    </aside>
+          <li className={`${styles.item} ${!open ? styles.close : ""}`}>
+            <span>
+              <BsTrash />
+            </span>
+            Bin
+          </li>
+        </ul>
+      </aside>
+    </>
   );
 };
 
