@@ -4,7 +4,9 @@ import { useNotes } from "../../context/NoteProvider";
 
 const Archive = () => {
   const { notesWithTags: notes } = useNotes();
-  const archivedNotes = notes.filter((note) => note.isArchived);
+  const archivedNotes = notes.filter(
+    (note) => note.isArchived && !note.isTrashed
+  );
 
   return (
     <div>

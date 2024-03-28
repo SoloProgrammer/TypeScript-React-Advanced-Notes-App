@@ -10,6 +10,7 @@ export type RawNoteData = {
   title: string;
   isPinned: false | true;
   isArchived: false | true;
+  isTrashed: false | true;
   markdown: string;
   tagIds: string[];
 };
@@ -19,6 +20,7 @@ export type NoteData = {
   markdown: string;
   isPinned: false | true;
   isArchived: false | true;
+  isTrashed: false | true;
   tags: Tag[];
 };
 
@@ -42,4 +44,3 @@ export type EditTagsModalProps = {
   deleteTag: (id: string) => void;
   updateTag: (data: Tag[]) => void;
 };
-

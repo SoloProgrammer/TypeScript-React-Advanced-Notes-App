@@ -35,7 +35,8 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
           selectedTagsIds?.every((id) =>
             note.tags.some((tag) => tag.id === id)
           )) &&
-        !note.isArchived
+        !note.isArchived &&
+        !note.isTrashed
       );
     });
   }, [title, selectedTagsIds]);

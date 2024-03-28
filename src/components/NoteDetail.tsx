@@ -52,7 +52,7 @@ const NoteDetail = () => {
         <Col>
           <h1>{note.title}</h1>
           <Stack direction="horizontal" gap={2}>
-            {note.tags.length &&
+            {note.tags.length > 0 &&
               note.tags.map((tag) => (
                 <CustomBadge key={tag.id} label={tag.label} />
               ))}

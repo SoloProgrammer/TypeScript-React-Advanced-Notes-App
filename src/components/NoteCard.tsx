@@ -7,18 +7,19 @@ import { motion } from "framer-motion";
 import { LuTrash } from "react-icons/lu";
 import { MdOutlineArchive, MdOutlineUnarchive } from "react-icons/md";
 import { useNotes } from "../context/NoteProvider";
+import { FaTrashAlt, FaTrashRestoreAlt } from "react-icons/fa";
 
-const NoteCard = ({
-  note,
-  onPinNote,
-  handleArchiveNote,
-}: NoteCardProps) => {
+const NoteCard = ({ note, onPinNote, handleArchiveNote }: NoteCardProps) => {
   const handlePinNote = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
     onPinNote(note.id);
   };
-  const { handleNoteClick:handleClick } = useNotes()
+  const {
+    handleNoteClick: handleClick,
+    handleTrashNote,
+    deleteNoteForEver,
+  } = useNotes();
   return (
     <motion.div
       className={styles.container}
@@ -41,19 +42,39 @@ const NoteCard = ({
           ))}
         </Stack>
         <div className={styles.actions}>
-          <span className="IconBtn">
-            <LuTrash />
-          </span>
+          {note.isTrashed && (
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteNoteForEver(note.id);
+              }}
+              className="IconBtn trashIcon"
+            >
+              <FaTrashAlt />
+            </span>
+          )}
           <span
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              handleArchiveNote && handleArchiveNote(note.id);
+              handleTrashNote(note.id);
             }}
-            className="IconBtn"
+            className="IconBtn trashIcon"
           >
-            {note.isArchived ? <MdOutlineUnarchive /> : <MdOutlineArchive />}
+            {note.isTrashed ? <FaTrashRestoreAlt /> : <LuTrash />}
           </span>
+          {!note.isTrashed && (
+            <span
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleArchiveNote && handleArchiveNote(note.id);
+              }}
+              className="IconBtn"
+            >
+              {note.isArchived ? <MdOutlineUnarchive /> : <MdOutlineArchive />}
+            </span>
+          )}
         </div>
       </Card>
     </motion.div>

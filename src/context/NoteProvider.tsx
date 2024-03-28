@@ -12,9 +12,11 @@ type ContextData = {
   updateTag: (tags: Tag[]) => void;
   deleteTag: (id: string) => void;
   onDeleteNote: (id: string) => void;
+  deleteNoteForEver: (id: string) => void;
   onPinNote: (id: string) => void;
   handleNoteClick: (id: string) => void;
   handleArchiveNote: (id: string) => void;
+  handleTrashNote: (id: string) => void;
   onUpdateNote: (id: string, Note: NoteData) => void;
   selectedNote: Note | null;
   handleModalOffsetClick: () => void;
@@ -107,7 +109,36 @@ const NoteProvider = ({ children }: NodeProviderProps) => {
         return note;
       })
     );
-    showToast(toastMsg, { icon: "💡" });
+    showToast(toastMsg, {
+      icon: "💡",
+      position: "bottom-right",
+    });
+  };
+
+  const handleTrashNote = (id: string) => {
+    let toastMsg = "Note Trashed";
+    setNotes(
+      notes.map((note) => {
+        if (note.id === id) {
+          if (note.isTrashed) {
+            toastMsg = "Note Restored";
+          }
+          note.isTrashed = !note.isTrashed;
+          note.isArchived = false;
+        }
+        return note;
+      })
+    );
+    showToast(toastMsg, {
+      icon: "💡",
+      position: "bottom-right",
+      style: { background: "#feefc3" },
+    });
+  };
+
+  const deleteNoteForEver = (id: string) => {
+    setNotes(notes.filter((note) => note.id !== id));
+    showToast("Note deleted completly", { icon: "🗑️" });
   };
 
   return (
@@ -121,6 +152,7 @@ const NoteProvider = ({ children }: NodeProviderProps) => {
         onAddTag,
         onCreateNote,
         onDeleteNote,
+        deleteNoteForEver,
         onPinNote,
         onUpdateNote,
         updateTag,
@@ -128,6 +160,7 @@ const NoteProvider = ({ children }: NodeProviderProps) => {
         selectedNote,
         handleModalOffsetClick,
         handleArchiveNote,
+        handleTrashNote,
       }}
     >
       {children}
