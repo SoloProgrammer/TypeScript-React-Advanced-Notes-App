@@ -9,7 +9,9 @@ import NoteLayout from "./components/NoteLayout";
 import ViewNoteModal from "./components/Modals/ViewNoteModal/ViewNoteModal";
 import Navbar from "./components/Shared/Navbar/Navbar";
 import SideBar from "./components/Shared/SideBar/SideBar";
-import TagPage from "./pages/TagPage/TagPage";
+import TagPage from "./pages/Tag/TagPage";
+import Archive from "./pages/Archive/Archive";
+import Bin from "./pages/Bin/Bin";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
 const NoteList = lazy(() => import("./components/NoteList/NoteList"));
@@ -145,7 +147,12 @@ const App = () => {
                 }
               />
             </Route>
-            <Route path="/tag/:tag" element={<TagPage />} />
+            <Route
+              path="/tag/:tag"
+              element={<TagPage handleNoteClick={handleNoteClick} onPinNote={onPinNote} notes={notesWithTags} />}
+            />
+            <Route path="/archive" element={<Archive />} />
+            <Route path="/bin" element={<Bin />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </main>

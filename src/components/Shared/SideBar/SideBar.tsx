@@ -41,7 +41,9 @@ const SideBar = ({ tags, open = false, toggleSidebar }: SideBarProps) => {
             <Link key={tag.id} to={`/tag/${tag.label}`}>
               <li
                 className={`${styles.item} ${!open ? styles.close : ""} ${
-                  pathname === `/tag/${tag.label}` ? styles.selected : ""
+                  pathname.replace("%20", " ") === `/tag/${tag.label.trim()}`
+                    ? styles.selected
+                    : ""
                 }`}
               >
                 <span>
@@ -51,18 +53,30 @@ const SideBar = ({ tags, open = false, toggleSidebar }: SideBarProps) => {
               </li>
             </Link>
           ))}
-          <li className={`${styles.item} ${!open ? styles.close : ""}`}>
-            <span>
-              <MdOutlineArchive />
-            </span>
-            Archive
-          </li>
-          <li className={`${styles.item} ${!open ? styles.close : ""}`}>
-            <span>
-              <BsTrash />
-            </span>
-            Bin
-          </li>
+          <Link to={"/archive"}>
+            <li
+              className={`${styles.item} ${!open ? styles.close : ""} ${
+                pathname === "/archive" ? styles.selected : ""
+              }`}
+            >
+              <span>
+                <MdOutlineArchive />
+              </span>
+              Archive
+            </li>
+          </Link>
+          <Link to="/bin">
+            <li
+              className={`${pathname === "/bin" ? styles.selected : ""} ${
+                styles.item
+              } ${!open ? styles.close : ""}`}
+            >
+              <span>
+                <BsTrash />
+              </span>
+              Bin
+            </li>
+          </Link>
         </ul>
       </aside>
     </>

@@ -1,5 +1,5 @@
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { NoteListProps } from "../../types/Notestypes";
+import { NoteListProps, SimplifiedNote } from "../../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
 import { useMemo, useState } from "react";
@@ -44,9 +44,6 @@ const NoteList = ({
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  const pinnedNotes = filteredNotes.filter((note) => note.isPinned);
-  const otherNotes = filteredNotes.filter((note) => !note.isPinned);
 
   return (
     <>
@@ -120,6 +117,37 @@ const NoteList = ({
         </Row>
       </Form>
       <div>{notes.length > 0 && filteredNotes.length < 1 && <NotFound />}</div>
+      <DisplayNotes
+        notes={filteredNotes}
+        onPinNote={onPinNote}
+        handleNoteClick={handleNoteClick}
+      />
+      <EditTagsModal
+        availableTags={availableTags}
+        show={showModal}
+        handleCloseModal={handleCloseModal}
+        deleteTag={deleteTag}
+        updateTag={updateTag}
+      />
+    </>
+  );
+};
+
+type DisplayNotesProps = {
+  notes: SimplifiedNote[];
+  handleNoteClick: (id: string) => void;
+  onPinNote: (id: string) => void;
+};
+
+export const DisplayNotes = ({
+  notes,
+  handleNoteClick,
+  onPinNote,
+}: DisplayNotesProps) => {
+  const pinnedNotes = notes.filter((note) => note.isPinned);
+  const otherNotes = notes.filter((note) => !note.isPinned);
+  return (
+    <>
       {pinnedNotes.length > 0 && (
         <div>
           <h3 className="notesHeading">PINNED</h3>
@@ -154,18 +182,11 @@ const NoteList = ({
           </div>
         </div>
       )}
-      <EditTagsModal
-        availableTags={availableTags}
-        show={showModal}
-        handleCloseModal={handleCloseModal}
-        deleteTag={deleteTag}
-        updateTag={updateTag}
-      />
     </>
   );
 };
 
-function NotFound() {
+export function NotFound() {
   return (
     <div className="not-found">
       <img
