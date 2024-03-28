@@ -51,7 +51,7 @@ const NoteCard = ({ note, onPinNote, handleArchiveNote }: NoteCardProps) => {
             <CustomBadge key={tag.id} label={tag.label} />
           ))}
         </Stack>
-        <div className={styles.actions}>
+        <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
           {note.isTrashed && (
             <ConfirmModal
               btnText="Yes delete"
