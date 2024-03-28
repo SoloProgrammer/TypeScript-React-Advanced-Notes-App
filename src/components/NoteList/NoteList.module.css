@@ -1,12 +1,32 @@
-.list{
+.list {
     display: flex;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
 }
+
+.notFoundTitle {
+    color: var(--dim-text-color);
+    font-size: 1.5rem;
+}
+
+.notFoundIcon {
+    font-size: 8rem;
+    opacity: .15;
+}
+
 @media screen and (max-width:770px) {
-    .list{
+    .list {
         justify-content: center;
+    }
+
+    .notFoundTitle {
+        font-size: 1.3rem;
+    }
+
+    .notFoundIcon {
+        font-size: 7rem;
+        opacity: .15;
     }
 
 }

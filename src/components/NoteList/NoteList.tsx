@@ -1,27 +1,20 @@
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { SimplifiedNote, Tag } from "../../types/Notestypes";
+import { SimplifiedNote } from "../../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import NoteCard from "../NoteCard";
 import styles from "./NoteList.module.css";
+import { useNotes } from "../../context/NoteProvider";
 
 type NoteListProps = {
-  notes: SimplifiedNote[];
-  availableTags: Tag[];
-  handleNoteClick: (id: string) => void;
-  onPinNote: (id: string) => void;
   openTagsModal: () => void;
 };
 
-const NoteList = ({
-  notes,
-  availableTags,
-  onPinNote,
-  handleNoteClick,
-  openTagsModal,
-}: NoteListProps) => {
+const NoteList = ({ openTagsModal }: NoteListProps) => {
   // Filteration of notes using search params
+
+  const { notesWithTags: notes, tags: availableTags } = useNotes();
   const [searchParsms, setSearchParams] = useSearchParams({
     title: "",
     selectedTagsIds: "",
@@ -41,7 +34,8 @@ const NoteList = ({
         (!selectedTagsIds![0] ||
           selectedTagsIds?.every((id) =>
             note.tags.some((tag) => tag.id === id)
-          ))
+          )) &&
+        !note.isArchived
       );
     });
   }, [title, selectedTagsIds]);
@@ -115,26 +109,17 @@ const NoteList = ({
         </Row>
       </Form>
       <div>{notes.length > 0 && filteredNotes.length < 1 && <NotFound />}</div>
-      <DisplayNotes
-        notes={filteredNotes}
-        onPinNote={onPinNote}
-        handleNoteClick={handleNoteClick}
-      />
+      <DisplayNotes notes={filteredNotes} />
     </>
   );
 };
 
 type DisplayNotesProps = {
   notes: SimplifiedNote[];
-  handleNoteClick: (id: string) => void;
-  onPinNote: (id: string) => void;
 };
 
-export const DisplayNotes = ({
-  notes,
-  handleNoteClick,
-  onPinNote,
-}: DisplayNotesProps) => {
+export const DisplayNotes = ({ notes }: DisplayNotesProps) => {
+  const { handleArchiveNote, onPinNote } = useNotes();
   const pinnedNotes = notes.filter((note) => note.isPinned);
   const otherNotes = notes.filter((note) => !note.isPinned);
   return (
@@ -146,8 +131,8 @@ export const DisplayNotes = ({
             {pinnedNotes.map((note) => {
               return (
                 <NoteCard
+                  handleArchiveNote={handleArchiveNote}
                   key={note.id}
-                  handleClick={handleNoteClick}
                   note={note}
                   onPinNote={onPinNote}
                 />
@@ -163,8 +148,8 @@ export const DisplayNotes = ({
             {otherNotes.map((note) => {
               return (
                 <NoteCard
+                  handleArchiveNote={handleArchiveNote}
                   key={note.id}
-                  handleClick={handleNoteClick}
                   note={note}
                   onPinNote={onPinNote}
                 />
@@ -177,15 +162,27 @@ export const DisplayNotes = ({
   );
 };
 
-export function NotFound() {
+export function NotFound({
+  icon,
+  title,
+}: {
+  icon?: ReactNode;
+  title?: string;
+}) {
   return (
     <div className="not-found">
-      <img
-        src="https://static.vecteezy.com/system/resources/thumbnails/020/487/380/small/empty-folder-no-result-document-file-data-not-found-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
-        alt="not found"
-        width={200}
-      />
-      No matching results
+      {icon ? (
+        <div className={styles.notFoundIcon}>{icon}</div>
+      ) : (
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/020/487/380/small/empty-folder-no-result-document-file-data-not-found-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
+          alt="not found"
+          width={200}
+        />
+      )}
+      <span className={styles.notFoundTitle}>
+        {title || "No matching results"}
+      </span>
     </div>
   );
 }

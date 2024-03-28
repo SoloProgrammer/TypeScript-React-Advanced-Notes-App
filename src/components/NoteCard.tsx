@@ -5,16 +5,26 @@ import CustomBadge from "./CustomBadge";
 import { BsFillPinFill, BsPin } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { LuTrash } from "react-icons/lu";
-import { MdOutlineArchive } from "react-icons/md";
+import { MdOutlineArchive, MdOutlineUnarchive } from "react-icons/md";
+import { useNotes } from "../context/NoteProvider";
 
-const NoteCard = ({ note, onPinNote, handleClick }: NoteCardProps) => {
+const NoteCard = ({
+  note,
+  onPinNote,
+  handleArchiveNote,
+}: NoteCardProps) => {
   const handlePinNote = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
     onPinNote(note.id);
   };
+  const { handleNoteClick:handleClick } = useNotes()
   return (
-    <motion.div className={styles.container} onClick={() => handleClick(note.id)} layoutId={note.id}>
+    <motion.div
+      className={styles.container}
+      onClick={() => handleClick(note.id)}
+      layoutId={note.id}
+    >
       <Card className={`p-4 pb-2 text-center ${styles.noteCard}`}>
         <span
           onClick={handlePinNote}
@@ -34,8 +44,15 @@ const NoteCard = ({ note, onPinNote, handleClick }: NoteCardProps) => {
           <span className="IconBtn">
             <LuTrash />
           </span>
-          <span className="IconBtn">
-            <MdOutlineArchive />
+          <span
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleArchiveNote && handleArchiveNote(note.id);
+            }}
+            className="IconBtn"
+          >
+            {note.isArchived ? <MdOutlineUnarchive /> : <MdOutlineArchive />}
           </span>
         </div>
       </Card>

@@ -1,14 +1,9 @@
 import { useParams } from "react-router-dom";
-import { Note } from "../../types/Notestypes";
 import { DisplayNotes, NotFound } from "../../components/NoteList/NoteList";
+import { useNotes } from "../../context/NoteProvider";
 
-type TagPageProps = {
-  notes: Note[];
-  handleNoteClick: (id: string) => void;
-  onPinNote: (id: string) => void;
-};
-
-const TagPage = ({ notes, handleNoteClick, onPinNote }: TagPageProps) => {
+const TagPage = () => {
+  const { notesWithTags: notes } = useNotes();
   const { tag: label } = useParams();
   const filteredNotes = notes.filter((note) =>
     note.tags.some((tag) => tag.label === label)
@@ -18,11 +13,7 @@ const TagPage = ({ notes, handleNoteClick, onPinNote }: TagPageProps) => {
 
   return (
     <div>
-      <DisplayNotes
-        notes={filteredNotes}
-        onPinNote={onPinNote}
-        handleNoteClick={handleNoteClick}
-      />
+      <DisplayNotes notes={filteredNotes} />
     </div>
   );
 };

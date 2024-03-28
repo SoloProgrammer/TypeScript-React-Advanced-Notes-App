@@ -1,10 +1,11 @@
 import NoteForm from "./NoteForm";
-import { EditNoteProps } from "../types/Notestypes";
 import { useNote } from "./NoteLayout";
 import { Link, Navigate } from "react-router-dom";
 import { Button, Col, Row } from "react-bootstrap";
+import { useNotes } from "../context/NoteProvider";
 
-const NoteEdit = ({ onUpdateNote, onAddTag, availableTags }: EditNoteProps) => {
+const NoteEdit = () => {
+  const { onUpdateNote, tags: availableTags } = useNotes();
   const note = useNote();
   if (!note) return <Navigate to={"/"} />;
   return (
@@ -23,8 +24,9 @@ const NoteEdit = ({ onUpdateNote, onAddTag, availableTags }: EditNoteProps) => {
         title={note.title}
         markdown={note.markdown}
         tags={note.tags}
+        isArchived={note.isArchived}
+        isPinned={note.isPinned}
         onSubmit={(data) => onUpdateNote(note.id, data)}
-        onAddTag={onAddTag}
         availableTags={availableTags}
       />
     </div>

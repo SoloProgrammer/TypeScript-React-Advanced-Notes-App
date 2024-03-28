@@ -1,9 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import useLocalStorage from "./Hooks/useLocalStorage";
-import { Suspense, lazy, useMemo, useState } from "react";
-import { Note, NoteData, RawNote, Tag } from "./types/Notestypes";
+import { Suspense, lazy, useState } from "react";
 import "./App.css";
 import NoteLayout from "./components/NoteLayout";
 import ViewNoteModal from "./components/Modals/ViewNoteModal/ViewNoteModal";
@@ -13,52 +11,20 @@ import TagPage from "./pages/Tag/TagPage";
 import Archive from "./pages/Archive/Archive";
 import Bin from "./pages/Bin/Bin";
 import EditTagsModal from "./components/Modals/EditTagsModal";
+import { Toaster } from "react-hot-toast";
+import { useNotes } from "./context/NoteProvider";
+import { Tag } from "./types/Notestypes";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
 const NoteList = lazy(() => import("./components/NoteList/NoteList"));
 const NewNote = lazy(() => import("./components/NewNote"));
 
 const App = () => {
-  const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
-  const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
-
-  const notesWithTags = useMemo(
-    () =>
-      notes.map((note) => {
-        return {
-          ...note,
-          tags: tags.filter((tag) => note.tagIds.includes(tag.id)),
-        };
-      }),
-    [notes, tags]
-  );
-
-  const onCreateNote = ({ tags, ...data }: NoteData) => {
-    setNotes((prevNotes) => {
-      return [
-        ...prevNotes,
-        { id: crypto.randomUUID(), ...data, tagIds: tags.map((tag) => tag.id) },
-      ];
-    });
-  };
-
-  const onAddTag = (tag: Tag) => {
-    setTags((prevTags) => [...prevTags, tag]);
-  };
-
-  const onDeleteNote = (id: string) => {
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
-  };
-
-  const onUpdateNote = (id: string, { tags, ...data }: NoteData) => {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) => {
-        if (note.id === id)
-          return { ...note, tagIds: tags.map((tag) => tag.id), ...data };
-        else return note;
-      })
-    );
-  };
+  const {
+    notesWithTags: notes,
+    setTags,
+    tags,
+  } = useNotes();
 
   const deleteTag = (id: string) => {
     setTags((prevTags) => prevTags.filter((tag) => tag.id !== id));
@@ -67,24 +33,6 @@ const App = () => {
   const updateTag = (updatedTags: Tag[]) => {
     setTags(updatedTags);
   };
-
-  const onPinNote = (id: string) => {
-    setNotes(
-      notes.map((note) => {
-        if (note.id === id) {
-          note.isPinned = !note.isPinned;
-        }
-        return note;
-      })
-    );
-  };
-
-  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
-  const handleNoteClick = (id: string) => {
-    setSelectedNote(notesWithTags.filter((n) => n.id === id)[0]);
-  };
-
-  const handleModalOffsetClick = () => setSelectedNote(null);
 
   const [open, setOpen] = useState(true);
 
@@ -114,13 +62,7 @@ const App = () => {
               path="/"
               element={
                 <Suspense fallback="Loading..">
-                  <NoteList
-                    openTagsModal={openTagsModal}
-                    onPinNote={onPinNote}
-                    availableTags={tags}
-                    handleNoteClick={handleNoteClick}
-                    notes={notesWithTags}
-                  />
+                  <NoteList openTagsModal={openTagsModal} />
                 </Suspense>
               }
             />
@@ -128,20 +70,16 @@ const App = () => {
               path="/new"
               element={
                 <Suspense fallback="Loading...">
-                  <NewNote
-                    onCreateNote={onCreateNote}
-                    onAddTag={onAddTag}
-                    availableTags={tags}
-                  />
+                  <NewNote />
                 </Suspense>
               }
             />
-            <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+            <Route path="/:id" element={<NoteLayout notes={notes} />}>
               <Route
                 index
                 element={
                   <Suspense fallback="loading..">
-                    <NoteDetail handleDelete={onDeleteNote} />
+                    <NoteDetail />
                   </Suspense>
                 }
               />
@@ -150,35 +88,21 @@ const App = () => {
                 path="edit"
                 element={
                   <Suspense fallback="Loading..">
-                    <NoteEdit
-                      onUpdateNote={onUpdateNote}
-                      onAddTag={onAddTag}
-                      availableTags={tags}
-                    />
+                    <NoteEdit />
                   </Suspense>
                 }
               />
             </Route>
             <Route
               path="/tag/:tag"
-              element={
-                <TagPage
-                  handleNoteClick={handleNoteClick}
-                  onPinNote={onPinNote}
-                  notes={notesWithTags}
-                />
-              }
+              element={<TagPage />}
             />
             <Route path="/archive" element={<Archive />} />
             <Route path="/bin" element={<Bin />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </main>
-        <ViewNoteModal
-          onPinNote={onPinNote}
-          handleOffsetClick={handleModalOffsetClick}
-          selectedNote={selectedNote}
-        />
+        <ViewNoteModal />
         <EditTagsModal
           availableTags={tags}
           show={showModal}
@@ -186,6 +110,7 @@ const App = () => {
           deleteTag={deleteTag}
           updateTag={updateTag}
         />
+        <Toaster />
       </Container>
     </>
   );

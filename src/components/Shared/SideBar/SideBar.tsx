@@ -10,6 +10,7 @@ import { BsTrash } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { PiNotePencil } from "react-icons/pi";
+
 type SideBarProps = {
   tags: Tag[];
   toggleSidebar: () => void;
@@ -17,6 +18,7 @@ type SideBarProps = {
   isModalOpen: boolean;
   openTagsModal: () => void;
 };
+
 const SideBar = ({
   tags,
   open = false,
@@ -30,6 +32,40 @@ const SideBar = ({
     toggleSidebar();
   }, [pathname]);
 
+  const links = [
+    {
+      path: "/",
+      isSelected: pathname === "/" && !isModalOpen,
+      name: "Notes",
+      icon: <AiOutlineBulb />,
+    },
+    {
+      path: "/new",
+      isSelected: pathname === "/new" && !isModalOpen,
+      name: "Create new note",
+      icon: <MdOutlineCreate />,
+    },
+    {
+      path: "",
+      isSelected: isModalOpen,
+      name: "Edit tags",
+      onclick: openTagsModal,
+      icon: <PiNotePencil />,
+    },
+    {
+      path: "/archive",
+      isSelected: pathname === "/archive" && !isModalOpen,
+      name: "Archive",
+      icon: <MdOutlineArchive />,
+    },
+    {
+      path: "/bin",
+      isSelected: pathname === "/bin" && !isModalOpen,
+      name: "Bin",
+      icon: <BsTrash />,
+    },
+  ];
+
   return (
     <>
       <div
@@ -38,73 +74,36 @@ const SideBar = ({
       ></div>
       <aside className={`${styles.container}  ${!open ? styles.close : ""}`}>
         <ul className={styles.list}>
-          <Link to={"/"}>
-            <li
-              className={`${styles.item} ${!open ? styles.close : ""} ${
-                !isModalOpen && pathname === "/" ? styles.selected : ""
-              }`}
-            >
-              <span>
-                <AiOutlineBulb />
-              </span>
-              Notes
-            </li>
-          </Link>
-          <Link to={"/new"}>
-            <li
-              className={`${styles.item} ${!open ? styles.close : ""} ${
-                !isModalOpen && pathname === "/new" ? styles.selected : ""
-              }`}
-            >
-              <span>
-                <PiNotePencil />
-              </span>
-              Create new Note
-            </li>
-          </Link>
-          <li
-            onClick={openTagsModal}
-            className={`${styles.item} ${!open ? styles.close : ""} ${
-              isModalOpen ? styles.selected : ""
-            } `}
+          {links.map((link) => (
+            <Link key={link.path} to={link.path}>
+              <li
+                onClick={(e) => {
+                  if (link.onclick) {
+                    e.preventDefault();
+                    link.onclick();
+                  }
+                }}
+                className={`${styles.item} ${!open ? styles.close : ""} ${
+                  link.isSelected ? styles.selected : ""
+                }`}
+              >
+                <span>{link.icon}</span>
+                {link.name}
+              </li>
+            </Link>
+          ))}
+          <h4
+            style={{ margin: "5px 18px 5px 18px" }}
+            className={`notesHeading ${styles.tagsHeading}`}
           >
-            <span>
-              <MdOutlineCreate />
-            </span>
-            Edit tags
-          </li>
-          <Link to={"/archive"}>
-            <li
-              className={`${styles.item} ${!open ? styles.close : ""} ${
-                !isModalOpen && pathname === "/archive" ? styles.selected : ""
-              }`}
-            >
-              <span>
-                <MdOutlineArchive />
-              </span>
-              Archive
-            </li>
-          </Link>
-          <Link to="/bin">
-            <li
-              className={`${
-                !isModalOpen && pathname === "/bin" ? styles.selected : ""
-              } ${styles.item} ${!open ? styles.close : ""}`}
-            >
-              <span>
-                <BsTrash />
-              </span>
-              Bin
-            </li>
-          </Link>
-          <h4 style={{ margin: "5px 18px 5px 18px" }} className={`notesHeading ${styles.tagsHeading}`}>
             TAGS
           </h4>
           {tags.map((tag) => (
             <Link key={tag.id} to={`/tag/${tag.label}`}>
               <li
                 className={`${styles.item} ${!open ? styles.close : ""} ${
-                  !isModalOpen && pathname.replace("%20", " ") === `/tag/${tag.label.trim()}`
+                  !isModalOpen &&
+                  pathname.replace("%20", " ") === `/tag/${tag.label.trim()}`
                     ? styles.selected
                     : ""
                 }`}

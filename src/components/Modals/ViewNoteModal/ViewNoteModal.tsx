@@ -1,4 +1,3 @@
-import { ViewNoteModalProps } from "../../../types/Notestypes";
 import styles from "./ViewNoteModal.module.css";
 import ReactMarkDown from "react-markdown";
 import { RiFullscreenFill } from "react-icons/ri";
@@ -6,12 +5,15 @@ import { motion } from "framer-motion";
 import CustomBadge from "../../CustomBadge";
 import { Link } from "react-router-dom";
 import { BsFillPinFill, BsPin } from "react-icons/bs";
+import { useNotes } from "../../../context/NoteProvider";
 
-const ViewNoteModal = ({
-  selectedNote,
-  handleOffsetClick,
-  onPinNote,
-}: ViewNoteModalProps) => {
+const ViewNoteModal = () => {
+  const {
+    selectedNote,
+    handleModalOffsetClick: handleOffsetClick,
+    onPinNote,
+  } = useNotes();
+
   if (!selectedNote) return;
 
   const { id, title, markdown, tags, isPinned } = selectedNote;

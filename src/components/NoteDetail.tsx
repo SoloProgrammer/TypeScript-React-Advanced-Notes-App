@@ -5,22 +5,21 @@ import { Link } from "react-router-dom";
 import ReactMarkDown from "react-markdown";
 import ConfirmModal from "./Modals/ConfirmModal";
 import { useState } from "react";
+import { useNotes } from "../context/NoteProvider";
 
-type NoteDetailProps = {
-  handleDelete: (id: string) => void;
-};
+const NoteDetail = () => {
+  const { onDeleteNote: handleDelete } = useNotes();
 
-const NoteDetail = ({ handleDelete }: NoteDetailProps) => {
   const note = useNote();
 
   const [show, setShow] = useState<boolean>(false);
-  
+
   const handleCloseModal = () => {
     setShow(false);
   };
 
-  const handleConfirm = ()=> handleDelete(note.id)
-  
+  const handleConfirm = () => handleDelete(note.id);
+
   return (
     <>
       <Row className="mb-4">
@@ -42,10 +41,7 @@ const NoteDetail = ({ handleDelete }: NoteDetailProps) => {
               handleConfirm={handleConfirm}
               handleCloseModal={handleCloseModal}
             >
-              <Button
-                onClick={() => setShow(true)}
-                variant="outline-danger"
-              >
+              <Button onClick={() => setShow(true)} variant="outline-danger">
                 Delete
               </Button>
             </ConfirmModal>
