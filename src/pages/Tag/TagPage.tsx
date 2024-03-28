@@ -16,7 +16,6 @@ const TagPage = ({ notes, handleNoteClick, onPinNote }: TagPageProps) => {
 
   if (filteredNotes.length < 1) return <NotFound />;
 
-
   return (
     <div>
       <DisplayNotes

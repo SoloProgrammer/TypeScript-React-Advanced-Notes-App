@@ -1,11 +1,20 @@
 import { Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { NoteListProps, SimplifiedNote } from "../../types/Notestypes";
+import { SimplifiedNote, Tag } from "../../types/Notestypes";
 import { Link, useSearchParams } from "react-router-dom";
 import ReactSelect from "react-select";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import NoteCard from "../NoteCard";
-import EditTagsModal from "../Modals/EditTagsModal";
 import styles from "./NoteList.module.css";
+
+type NoteListProps = {
+  notes: SimplifiedNote[];
+  availableTags: Tag[];
+  deleteTag: (id: string) => void;
+  handleNoteClick: (id: string) => void;
+  onPinNote: (id: string) => void;
+  updateTag: (data: Tag[]) => void;
+  openTagsModal: () => void;
+};
 
 const NoteList = ({
   notes,
@@ -14,6 +23,7 @@ const NoteList = ({
   onPinNote,
   deleteTag,
   handleNoteClick,
+  openTagsModal,
 }: NoteListProps) => {
   // Filteration of notes using search params
   const [searchParsms, setSearchParams] = useSearchParams({
@@ -40,11 +50,6 @@ const NoteList = ({
     });
   }, [title, selectedTagsIds]);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   return (
     <>
       <Row className="mb-3">
@@ -56,10 +61,7 @@ const NoteList = ({
             <Link to={"/new"}>
               <Button>Create</Button>
             </Link>
-            <Button
-              onClick={() => setShowModal(true)}
-              variant="outline-secondary"
-            >
+            <Button onClick={openTagsModal} variant="outline-secondary">
               Edit Tags
             </Button>
           </Stack>
@@ -121,13 +123,6 @@ const NoteList = ({
         notes={filteredNotes}
         onPinNote={onPinNote}
         handleNoteClick={handleNoteClick}
-      />
-      <EditTagsModal
-        availableTags={availableTags}
-        show={showModal}
-        handleCloseModal={handleCloseModal}
-        deleteTag={deleteTag}
-        updateTag={updateTag}
       />
     </>
   );

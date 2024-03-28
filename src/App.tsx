@@ -12,6 +12,7 @@ import SideBar from "./components/Shared/SideBar/SideBar";
 import TagPage from "./pages/Tag/TagPage";
 import Archive from "./pages/Archive/Archive";
 import Bin from "./pages/Bin/Bin";
+import EditTagsModal from "./components/Modals/EditTagsModal";
 const NoteDetail = lazy(() => import("./components/NoteDetail"));
 const NoteEdit = lazy(() => import("./components/NoteEdit"));
 const NoteList = lazy(() => import("./components/NoteList/NoteList"));
@@ -90,11 +91,23 @@ const App = () => {
   const toggleSidebar = () => setOpen((prev) => !prev);
   const closeSidebar = () => setOpen(true);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const openTagsModal = () => setShowModal(true);
+
   return (
     <>
       <Navbar toggleSidebar={toggleSidebar} />
       <Container className="my-4 container">
-        <SideBar open={open} tags={tags} toggleSidebar={closeSidebar} />
+        <SideBar
+          isModalOpen={showModal}
+          openTagsModal={openTagsModal}
+          open={open}
+          tags={tags}
+          toggleSidebar={closeSidebar}
+        />
         <main className={`main ${!open ? "close" : ""}`}>
           <Routes>
             <Route
@@ -102,6 +115,7 @@ const App = () => {
               element={
                 <Suspense fallback="Loading..">
                   <NoteList
+                    openTagsModal={openTagsModal}
                     deleteTag={deleteTag}
                     updateTag={updateTag}
                     onPinNote={onPinNote}
@@ -149,7 +163,13 @@ const App = () => {
             </Route>
             <Route
               path="/tag/:tag"
-              element={<TagPage handleNoteClick={handleNoteClick} onPinNote={onPinNote} notes={notesWithTags} />}
+              element={
+                <TagPage
+                  handleNoteClick={handleNoteClick}
+                  onPinNote={onPinNote}
+                  notes={notesWithTags}
+                />
+              }
             />
             <Route path="/archive" element={<Archive />} />
             <Route path="/bin" element={<Bin />} />
@@ -160,6 +180,13 @@ const App = () => {
           onPinNote={onPinNote}
           handleOffsetClick={handleModalOffsetClick}
           selectedNote={selectedNote}
+        />
+        <EditTagsModal
+          availableTags={tags}
+          show={showModal}
+          handleCloseModal={handleCloseModal}
+          deleteTag={deleteTag}
+          updateTag={updateTag}
         />
       </Container>
     </>

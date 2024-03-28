@@ -58,11 +58,3 @@ export type NoteFormProps = {
   availableTags: Tag[];
 } & Partial<NoteData>;
 
-export type NoteListProps = {
-  notes: SimplifiedNote[];
-  availableTags: Tag[];
-  deleteTag: (id: string) => void;
-  handleNoteClick: (id: string) => void;
-  onPinNote: (id: string) => void;
-  updateTag: (data: Tag[]) => void;
-};
