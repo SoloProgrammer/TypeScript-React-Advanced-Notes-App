@@ -6,11 +6,14 @@ import ReactMarkDown from "react-markdown";
 import ConfirmModal from "./Modals/ConfirmModal";
 import { useState } from "react";
 import { useNotes } from "../context/NoteProvider";
+import { showToast } from "../utils/toast";
+import { NotFound } from "./NoteList/NoteList";
+import { ImEyeBlocked } from "react-icons/im";
 
 const NoteDetail = () => {
-  const { onDeleteNote: handleDelete } = useNotes();
-
   const note = useNote();
+
+  const { onDeleteNote: handleDeleteNote } = useNotes();
 
   const [show, setShow] = useState<boolean>(false);
 
@@ -18,7 +21,19 @@ const NoteDetail = () => {
     setShow(false);
   };
 
-  const handleConfirm = () => handleDelete(note.id);
+  const handleConfirm = () => handleDeleteNote(note.id);
+
+  const { isArchived, isTrashed } = note;
+
+  if (isArchived || isTrashed) {
+    showToast(
+      `${isArchived ? "UnArchive" : ""} ${
+        isTrashed ? "Restore" : ""
+      } Note to view in full screen mode`,
+      { icon: "❌", position: "bottom-right", duration: 3000 }
+    );
+    return <NotFound icon={<ImEyeBlocked />} title="No Preview available" />;
+  }
 
   return (
     <>

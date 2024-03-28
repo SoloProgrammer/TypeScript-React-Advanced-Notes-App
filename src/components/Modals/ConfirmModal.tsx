@@ -39,11 +39,7 @@ const ConfirmModal = ({
             <Button size="sm" variant="secondary" onClick={handleCloseModal}>
               Cancel
             </Button>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              onClick={() => handleConfirm()}
-            >
+            <Button variant="outline-danger" size="sm" onClick={handleConfirm}>
               {btnText}
             </Button>
           </Stack>

@@ -8,6 +8,8 @@ import { LuTrash } from "react-icons/lu";
 import { MdOutlineArchive, MdOutlineUnarchive } from "react-icons/md";
 import { useNotes } from "../context/NoteProvider";
 import { FaTrashAlt, FaTrashRestoreAlt } from "react-icons/fa";
+import ConfirmModal from "./Modals/ConfirmModal";
+import { useState } from "react";
 
 const NoteCard = ({ note, onPinNote, handleArchiveNote }: NoteCardProps) => {
   const handlePinNote = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
@@ -20,6 +22,14 @@ const NoteCard = ({ note, onPinNote, handleArchiveNote }: NoteCardProps) => {
     handleTrashNote,
     deleteNoteForEver,
   } = useNotes();
+
+  const [show, setShow] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setShow(false);
+  };
+  const handleConfirm = () => deleteNoteForEver(note.id);
+
   return (
     <motion.div
       className={styles.container}
@@ -43,15 +53,24 @@ const NoteCard = ({ note, onPinNote, handleArchiveNote }: NoteCardProps) => {
         </Stack>
         <div className={styles.actions}>
           {note.isTrashed && (
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteNoteForEver(note.id);
-              }}
-              className="IconBtn trashIcon"
+            <ConfirmModal
+              btnText="Yes delete"
+              desc="Delete Note forever?"
+              handleCloseModal={handleCloseModal}
+              show={show}
+              title="Delete Note!"
+              handleConfirm={handleConfirm}
             >
-              <FaTrashAlt />
-            </span>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShow(true);
+                }}
+                className="IconBtn trashIcon"
+              >
+                <FaTrashAlt />
+              </span>
+            </ConfirmModal>
           )}
           <span
             onClick={(e) => {

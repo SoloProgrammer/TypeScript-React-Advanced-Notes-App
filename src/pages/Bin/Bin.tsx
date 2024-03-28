@@ -12,6 +12,7 @@ const Bin = () => {
       {trashedNotes.length < 1 && (
         <NotFound icon={<BsTrash />} title="Your archived notes appear here" />
       )}
+      
     </div>
   );
 };
