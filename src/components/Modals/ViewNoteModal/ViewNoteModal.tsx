@@ -6,6 +6,7 @@ import CustomBadge from "../../CustomBadge";
 import { Link } from "react-router-dom";
 import { BsFillPinFill, BsPin } from "react-icons/bs";
 import { useNotes } from "../../../context/NoteProvider";
+import { showToast } from "../../../utils/toast";
 
 const ViewNoteModal = () => {
   const {
@@ -16,7 +17,8 @@ const ViewNoteModal = () => {
 
   if (!selectedNote) return;
 
-  const { id, title, markdown, tags, isPinned } = selectedNote;
+  const { id, title, markdown, tags, isPinned, isArchived, isTrashed } =
+    selectedNote;
   return (
     <div className={styles.container} onClick={handleOffsetClick}>
       <motion.div
@@ -45,11 +47,27 @@ const ViewNoteModal = () => {
           <ReactMarkDown>{markdown}</ReactMarkDown>
         </div>
         <div className={styles.actions}>
-          <span onClick={handleOffsetClick} className={styles.fsBtn}>
-            <Link to={`/${id}`}>
+          <Link to={`/${id}`}>
+            <span
+              onClick={(e) => {
+                if (isArchived || isTrashed) {
+                  showToast(
+                    `${isArchived ? "UnArchive" : ""} ${
+                      isTrashed ? "Restore" : ""
+                    } Note to view in full scrren mode`,
+                    { icon: "❌", position: "bottom-right", duration: 3000 }
+                  );
+                  e.preventDefault();
+                  e.stopPropagation();
+                } else {
+                  handleOffsetClick();
+                }
+              }}
+              className={styles.fsBtn}
+            >
               <RiFullscreenFill />
-            </Link>
-          </span>
+            </span>
+          </Link>
         </div>
       </motion.div>
     </div>

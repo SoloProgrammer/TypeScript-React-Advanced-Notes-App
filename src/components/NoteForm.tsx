@@ -18,6 +18,7 @@ const NoteForm = ({
   tags = [],
   isPinned = false,
   isArchived = false,
+  isTrashed = false,
 }: NoteFormProps) => {
   const { onAddTag } = useNotes();
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const NoteForm = ({
       tags: selectedTags,
       isPinned,
       isArchived,
+      isTrashed,
     };
     onSubmit(newNote);
     navigate("..");
