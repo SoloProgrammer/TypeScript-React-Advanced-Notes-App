@@ -9,7 +9,11 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
     <header className={styles.container}>
       <Link to="/">
         <div className={styles.logo}>
-          <div onClick={toggleSidebar} className={`${styles.menuIcon}`}>
+          <div onClick={(e)=>{
+            e.preventDefault()
+            e.stopPropagation()
+            toggleSidebar()
+          }} className={`${styles.menuIcon}`}>
             <FiMenu />
           </div>
           <img
