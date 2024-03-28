@@ -9,19 +9,15 @@ import styles from "./NoteList.module.css";
 type NoteListProps = {
   notes: SimplifiedNote[];
   availableTags: Tag[];
-  deleteTag: (id: string) => void;
   handleNoteClick: (id: string) => void;
   onPinNote: (id: string) => void;
-  updateTag: (data: Tag[]) => void;
   openTagsModal: () => void;
 };
 
 const NoteList = ({
   notes,
   availableTags,
-  updateTag,
   onPinNote,
-  deleteTag,
   handleNoteClick,
   openTagsModal,
 }: NoteListProps) => {

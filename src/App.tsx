@@ -116,8 +116,6 @@ const App = () => {
                 <Suspense fallback="Loading..">
                   <NoteList
                     openTagsModal={openTagsModal}
-                    deleteTag={deleteTag}
-                    updateTag={updateTag}
                     onPinNote={onPinNote}
                     availableTags={tags}
                     handleNoteClick={handleNoteClick}
