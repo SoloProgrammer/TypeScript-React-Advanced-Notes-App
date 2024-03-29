@@ -6,6 +6,7 @@ import { ReactNode, useMemo } from "react";
 import NoteCard from "../NoteCard";
 import styles from "./NoteList.module.css";
 import { useNotes } from "../../context/NoteProvider";
+import { CiCirclePlus } from "react-icons/ci";
 
 type NoteListProps = {
   openTagsModal: () => void;
@@ -40,6 +41,20 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
       );
     });
   }, [title, selectedTagsIds]);
+
+  if (filteredNotes.length < 1) {
+    return (
+      <div className={styles.center}>
+        <NotFound title="No Dev notes found to display" />
+        <Link to={"/new"} className={styles.create}>
+          <span>
+            <CiCirclePlus />
+          </span>
+          Create new dev note
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>

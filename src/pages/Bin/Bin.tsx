@@ -10,9 +10,8 @@ const Bin = () => {
     <div>
       <DisplayNotes notes={trashedNotes} />
       {trashedNotes.length < 1 && (
-        <NotFound icon={<BsTrash />} title="Your archived notes appear here" />
+        <NotFound icon={<BsTrash />} title="No notes in Recycle Bin" />
       )}
-      
     </div>
   );
 };

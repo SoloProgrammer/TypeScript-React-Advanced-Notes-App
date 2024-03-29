@@ -15,6 +15,39 @@
     opacity: .15;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.create {
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: fit-content;
+    padding: 30px 100px;
+    display: flex;
+    color: var(--light-text-color) !important;
+    flex-direction: column;
+    transition: .2s color;
+}
+
+.create:hover{
+    color: black !important;
+}
+.create:hover span{
+    scale: 1.1;
+}
+
+.create span {
+    transition: .2s scale;
+    font-size: 2rem;
+    text-align: center;
+}
+
 @media screen and (max-width:770px) {
     .list {
         justify-content: center;
