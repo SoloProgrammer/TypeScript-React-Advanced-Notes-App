@@ -27,6 +27,10 @@
     transition: .3s all cubic-bezier(0.76, 0, 0.24, 1);
 }
 
+.hide {
+    display: none;
+}
+
 .container::-webkit-scrollbar {
     width: 8px;
 }

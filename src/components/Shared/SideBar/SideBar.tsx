@@ -51,6 +51,7 @@ const SideBar = ({
       name: "Edit tags",
       onclick: openTagsModal,
       icon: <PiNotePencil />,
+      isHide: tags.length < 1,
     },
     {
       path: "/archive",
@@ -75,7 +76,11 @@ const SideBar = ({
       <aside className={`${styles.container}  ${!open ? styles.close : ""}`}>
         <ul className={styles.list}>
           {links.map((link) => (
-            <Link key={link.path} to={link.path}>
+            <Link
+              className={`${link.isHide ? styles.hide : ""}`}
+              key={link.path}
+              to={link.path}
+            >
               <li
                 onClick={(e) => {
                   if (link.onclick) {
@@ -92,12 +97,14 @@ const SideBar = ({
               </li>
             </Link>
           ))}
-          <h4
-            style={{ margin: "5px 18px 5px 18px" }}
-            className={`notesHeading ${styles.tagsHeading}`}
-          >
-            TAGS
-          </h4>
+          {tags.length > 0 && (
+            <h4
+              style={{ margin: "5px 18px 5px 18px" }}
+              className={`notesHeading ${styles.tagsHeading}`}
+            >
+              TAGS
+            </h4>
+          )}
           {tags.map((tag) => (
             <Link key={tag.id} to={`/tag/${tag.label}`}>
               <li

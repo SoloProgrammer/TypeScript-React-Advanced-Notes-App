@@ -96,7 +96,7 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
           </Col>
           <Col>
             <Form.Group controlId="select">
-              <Form.Label>Select</Form.Label>
+              <Form.Label>Tags</Form.Label>
               <ReactSelect
                 // value prop - needs to show the tag
                 value={selectedTags.map((tag) => {
