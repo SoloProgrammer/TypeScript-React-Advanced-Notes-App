@@ -6,6 +6,8 @@ body {
     --light-text-color: rgba(0, 0, 0, 0.4);
     --dim-text-color: rgba(0, 0, 0, 0.7);
     --dull-text-color: #5f6368;
+    --light-theme-color: #feefc3;
+    --light-hover-color: #f1f3f4
 }
 
 a {
@@ -65,9 +67,11 @@ main {
     min-height: 37px;
 
 }
-.trashIcon{
+
+.trashIcon {
     font-size: 1rem !important;
 }
+
 .IconBtn:hover {
     background: rgba(0, 0, 0, 0.08);
     color: var(--dim-text-color);
@@ -91,7 +95,8 @@ main {
 
 @media screen and (max-width:650px) {
 
-    main, .main.close {
+    main,
+    .main.close {
         padding-left: 0px !important;
     }
 

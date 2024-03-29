@@ -29,7 +29,7 @@ const SideBar = ({
   const { pathname } = useLocation();
 
   useEffect(() => {
-    toggleSidebar();
+    window.innerWidth <= 770 && toggleSidebar();
   }, [pathname]);
 
   const links = [
