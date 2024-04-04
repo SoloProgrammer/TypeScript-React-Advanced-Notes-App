@@ -29,8 +29,6 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
     selectedTagsIds?.includes(tag.id)
   );
 
-  console.log(selectedTagsIds);
-
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
       return (
