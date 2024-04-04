@@ -48,7 +48,7 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
   // 3) if user didn't have any core notes or notes are in bin or archived space! We are not shpowing the below Not Found JSX to the user when he is trying to filter out notes by their title instead we show no maching results!
   if (
     filteredNotes.length < 1 &&
-    ((notes.length > 0 && title === "") || notes.length < 1)
+    ((notes.length > 0 && title === "" && !selectedTagsIds[0]) || notes.length < 1)
   ) {
     return (
       <div className={styles.center}>

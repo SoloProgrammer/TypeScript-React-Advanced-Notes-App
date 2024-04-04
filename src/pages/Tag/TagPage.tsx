@@ -14,11 +14,7 @@ const TagPage = () => {
 
   if (filteredNotes.length < 1) return <NotFound />;
 
-  return (
-    <div>
-      <DisplayNotes notes={filteredNotes} />
-    </div>
-  );
+  return <DisplayNotes notes={filteredNotes} />;
 };
 
 export default TagPage;
