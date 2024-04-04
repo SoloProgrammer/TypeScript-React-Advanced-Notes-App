@@ -44,7 +44,10 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
     });
   }, [title, selectedTagsIds]);
 
-  if (filteredNotes.length < 1) {
+  // 1) Here we are cheking if filtered notes length < 1 and notes.length > 0 also title should be equal to "" 
+  // 2) means we are considering filtered notes that are not filtered by title only filtered by archived/bin/tag so that we can display the below JSX to the user 
+  // 3) if user didn't have any core notes or notes are in bin or archived space! We are not shpowing the below Not Found JSX to the user when he is trying to filter out notes by their title instead we show no maching results! 
+  if (filteredNotes.length < 1 && notes.length > 0 && title === "") {
     return (
       <div className={styles.center}>
         <NotFound title="No Dev notes found to display" />
