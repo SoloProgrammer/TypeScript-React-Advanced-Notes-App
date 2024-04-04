@@ -22,10 +22,14 @@ const NoteList = ({ openTagsModal }: NoteListProps) => {
   });
 
   const title = searchParsms.get("title") || "";
-  const selectedTagsIds = searchParsms.get("selectedTagsIds")?.split("+");
+  const selectedTagsIds = searchParsms.get("selectedTagsIds")?.split("+") || [
+    "",
+  ];
   const selectedTags = availableTags.filter((tag) =>
     selectedTagsIds?.includes(tag.id)
   );
+
+  console.log(selectedTagsIds);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
